@@ -7,8 +7,7 @@ def ui(nbVar  = 1 , nbCons = 1):
         def solveProblem():
             senses=[]
             valuesConstr = []
-            constraintsCoeff = [[]]*nbCons
-
+            constraintsCoeff = []
             for i in range(nbCons):
                 combo = combo_boxs[i].currentText()
                 if combo == '<=':
@@ -17,30 +16,37 @@ def ui(nbVar  = 1 , nbCons = 1):
                     senses.append('G')
                 elif combo == '=':
                     senses.append('E') 
-                #get coefficents of obj Function
-                objFun = []
-                for i in range(nbVar):
+            #get coefficents of obj Function
+            objFun = []
+            for i in range(nbVar):
                     val = float(text_inputs[i].toPlainText().replace(' ' , ''))
                     objFun.append(val)
-                #get coefficents of obj Function
-                for i in range(nbCons):
-                    for j in range(nbVar):
-                        print()
+          
+            #get coefficents of obj Function
+            for i in range(nbCons):
+                constraintsCoeff.append([])
+                for j in range(nbVar):
+                    val = float(constraints[i][j].toPlainText())
+                    constraintsCoeff[i].append(val)
+           
+
                         
             # constraints values
             for i in range(nbCons):
                 val = float(values[i].toPlainText().replace(' ' , ''))
                 valuesConstr.append(val)
+            solution = solve_linear_problem(senses , objFun , constraintsCoeff , valuesConstr , option.isChecked() )
+            print(solution)
 
   #=================================================================
         app = QtWidgets.QApplication(sys.argv) 
         window = QtWidgets.QMainWindow()
         window.resize(1200, 1200)  # Increase the window size to accommodate all elemen
         window.setWindowTitle("Show Result")
-        option1 = QtWidgets.QRadioButton('MIN' , window)
-        option1.move(120 , 50)
+        option = QtWidgets.QRadioButton('MIN' , window)
+        option.move(120 , 50)
         text_inputs = []
-        constraints = [[]]*nbCons
+        constraints = []
         fun = QtWidgets.QLabel("<h2>Enter the objectif function : </h2>", window)
         fun.resize(400 , 100)
         fun.move( 120 , 150 )
@@ -57,13 +63,14 @@ def ui(nbVar  = 1 , nbCons = 1):
         con.resize(400 , 100)
         con.move( 120 , 300 )
         for i in range(nbCons):
+            constraints.append([])
             for j in range(nbVar):
                 text_input = QtWidgets.QTextEdit(window)
                 label = QtWidgets.QLabel(f"X{j+1}", window)
                 label.move( 120*(j+1),295 + 70*(i+1))
                 text_input.move(120 * (j + 1), 325 + 70 * (i + 1))
                 constraints[i].append(text_input)
-                print(text_input.toPlainText())
+                
             combo_box = QtWidgets.QComboBox(window)
             combo_box.move(120 *nbVar + 120, 325+ 70 *(i+1))
             # Add an option (similar to <option>)

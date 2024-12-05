@@ -1,5 +1,5 @@
 from cplex import Cplex
-def solve_linear_problem(senses =[] , obj = [] , constraintCoefficient = [[]] , values = []):
+def solve_linear_problem(senses =[] , obj = [] , constraintCoefficient = [[]] , values = [] , minimze = False):
     # Create a CPLEX model
     var = len(obj)
     names = []
@@ -8,6 +8,7 @@ def solve_linear_problem(senses =[] , obj = [] , constraintCoefficient = [[]] , 
     # Run the solver
     model = Cplex()
     # Set the problem type to Maximization
+    if minimze:
     model.objective.set_sense(model.objective.sense.maximize)
 
     # Add decision variables with their coefficients in the objective function
