@@ -9,7 +9,9 @@ def solve_linear_problem(senses =[] , obj = [] , constraintCoefficient = [[]] , 
     model = Cplex()
     # Set the problem type to Maximization
     if minimze:
-    model.objective.set_sense(model.objective.sense.maximize)
+        model.objective.set_sense(model.objective.sense.minimize)
+    else:  
+        model.objective.set_sense(model.objective.sense.maximize)
 
     # Add decision variables with their coefficients in the objective function
     # The variable type is "C" for continuous
